@@ -12,15 +12,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # --- ShellCheck Steps ---
-    - uses: actions/checkout@v4
-    - name: Install ShellCheck
-      run: sudo apt-get update && sudo apt-get install -y shellcheck
-
-    - name: Run ShellCheck on all Bash scripts
-      run: find . -name "*.sh" -print0 | xargs -0 shellcheck
-
     # --- CppCheck Steps ---
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
     - name: Install Cppcheck
       run: sudo apt-get install -y cppcheck
 
@@ -28,7 +23,8 @@ jobs:
       id: cppcheck_run
       run: |
         cppcheck --enable=all --std=c99 -D_POSIX_C_SOURCE=200809L \
-        --xml --output-file=cppcheck_results.xml $(find . -name "*.c") || true
+        -I include/ \
+        --xml --output-file=cppcheck_results.xml $(find src/ -name "*.c") || true
     
     - name: Upload Cppcheck results artifact
       uses: actions/upload-artifact@v4

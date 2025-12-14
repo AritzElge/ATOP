@@ -3,6 +3,7 @@
 An educational, platform-agnostic C library for UAV flight control systems. Developed as an evolution of a university final project, focusing on clarity, modular design, and flexible hardware abstraction.
 
 ![Project Status](https://img.shields.io/badge/Project_Status-WIP-blue)
+
 [![Static Analysis](https://github.com/AritzElge/ATOP/actions/workflows/static_analysis.yml/badge.svg)](https://github.com/AritzElge/ATOP/actions/workflows/static_analysis.yml)
 
 ## Table of Contents
@@ -15,9 +16,10 @@ An educational, platform-agnostic C library for UAV flight control systems. Deve
 
 ## Purpose & Scope
 
-This repository originates from my Bachelor's Thesis in Aerospace Engineering and is primarily intended for **educational purposes**. The main objective is to demonstrate robust architectural patterns for separating core flight control logic from platform-specific hardware interactions (e.g., IMU, GPS, Servos).
+This repository represents **Version 2 (v2)** of the control system developed during my Bachelor's Thesis in Aerospace Engineering.
 
-The design prioritizes flexibility and ease of integration across various development boards (like Arduino or generic microcontrollers) over strict certification standards, making it an ideal learning resource.
+*   **v1 (Thesis Project):** A monolithic, baremetal firmware developed for Arduino, focused on validating core flight algorithms. You can review the original work [here](https://addi.ehu.es/handle/10810/53462).
+*   **v2 (Current Library):** This C library, designed for education and flexibility, decouples the core logic from specific hardware via a robust HAL.
 
 ## Features
 

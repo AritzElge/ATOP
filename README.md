@@ -16,7 +16,7 @@ An educational, platform-agnostic C library for UAV flight control systems. Deve
 
 ## Purpose & Scope
 
-This repository represents **Version 2 (v2)** of the control system developed during my Bachelor's Thesis in Aerospace Engineering.
+This repository represents **Version 2 (v2)** of the control system developed during my Bachelor's Degree Final Project in Industrial and Automatic Electronic Engineering.
 
 *   **v1 (Thesis Project):** A monolithic, baremetal firmware developed for Arduino, focused on validating core flight algorithms. You can review the original work [here](https://addi.ehu.es/handle/10810/53462).
 *   **v2 (Current Library):** This C library, designed for education and flexibility, decouples the core logic from specific hardware via a robust HAL.

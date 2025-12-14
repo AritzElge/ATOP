@@ -3,6 +3,7 @@
 An educational, platform-agnostic C library for UAV flight control systems. Developed as an evolution of a university final project, focusing on clarity, modular design, and flexible hardware abstraction.
 
 ![Project Status](https://img.shields.io/badge/Project_Status-WIP-blue)
+[![Static Analysis](https://github.com/AritzElge/ATOP/actions/workflows/static_analysis.yml/badge.svg)](https://github.com/AritzElge/ATOP/actions/workflows/static_analysis.yml)
 
 ## Table of Contents
 - [Purpose & Scope](#purpose-&-scope)

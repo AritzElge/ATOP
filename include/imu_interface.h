@@ -4,8 +4,8 @@
  *      Author: AritzElge
  */
 
-#ifndef SRC_IMU_INTERFACE_H_
-#define SRC_IMU_INTERFACE_H_
+#ifndef INCLUDE_IMU_INTERFACE_H_
+#define INCLUDE_IMU_INTERFACE_H_
 
 //#include <stddef.h>
 #include <stdbool.h>
@@ -43,6 +43,10 @@ typedef bool (*get_imu_gyros)(float* gyrosOX, float* gyrosOY, float* gyrosOZ);
  * @return true if successful, false otherwise.
  */
 typedef bool (*get_imu_mag)(float* magOX, float* magOY, float* magOZ);
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 // Pointer storing functions
 /**
@@ -82,4 +86,9 @@ bool imu_config(imu_start imu_start_function);
 bool get_imu_data(float* accelOX, float* accelOY, float* accelOZ,
 					float* gyrosOX, float* gyrosOY, float* gyrosOZ,
 					float* magOX, float* magOY, float* magOZ);
-#endif /* SRC_IMU_INTERFACE_H_ */
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* INCLUDE_IMU_INTERFACE_H_ */

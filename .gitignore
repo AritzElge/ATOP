@@ -53,3 +53,13 @@ dkms.conf
 
 # debug information files
 *.dwo
+
+# STM32 IDE files
+*.bin
+*.uvproj
+.cproject.user
+.mxproject.user
+
+# Backup or temporal files
+*~
+*.swp

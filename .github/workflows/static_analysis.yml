@@ -23,7 +23,7 @@ jobs:
       id: cppcheck_run
       run: |
         cppcheck --enable=all --std=c99 -D_POSIX_C_SOURCE=200809L \
-        -I include/
+        -I include/ \
         --xml --output-file=cppcheck_results.xml $(find src/ -name "*.c") || true
     
     - name: Upload Cppcheck results artifact

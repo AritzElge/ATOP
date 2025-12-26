@@ -59,6 +59,13 @@ dkms.conf
 *.uvproj
 .cproject.user
 .mxproject.user
+.mxproject
+# Ignore output folders
+/examples/STM32L476RG_nucleo/Debug/
+/examples/STM32L476RG_nucleo/Release/
+
+# Ignorar user config files
+/examples/STM32L476RG_nucleo/.settings/
 
 # Backup or temporal files
 *~

@@ -2,7 +2,7 @@ name: STM32 Build
 
 on:
   push:
-    branches: [ main, dev, feat/stm32_example ]
+    branches: [ main ]
   pull_request:
     branches: [ main ]
 

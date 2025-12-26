@@ -6,6 +6,8 @@ An educational, platform-agnostic C library for UAV flight control systems. Deve
 
 [![Static Analysis](https://github.com/AritzElge/ATOP/actions/workflows/static_analysis.yml/badge.svg)](https://github.com/AritzElge/ATOP/actions/workflows/static_analysis.yml)
 
+[![STM32 Build](https://github.com/AritzElge/ATOP/actions/workflows/stm32_build.yml/badge.svg)](https://github.com/AritzElge/ATOP/actions/workflows/stm32_build.yml)
+
 ## Table of Contents
 - [Purpose & Scope](#purpose-&-scope)
 - [Features](#features)

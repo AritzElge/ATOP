@@ -1,0 +1,31 @@
+ name: STM32 Build Example
+
+on:
+  push:
+    branches: [ main, dev, feat/stm32_example ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build STM32 Project (Headless)
+        # This action uses STM32CubeIDE to compile .project files
+        uses: xidatux/stm32-cubeide-build-action@v1
+        with:
+          # .project file's folder PATH
+          project-path: 'examples/STM32L476RG_nucleo'
+          # IDE Project name:
+          project-name: 'STM32L476RG_nucleo'
+          # Compile configuration:
+          build-config: 'Debug'
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: stm32-binary
+          path: examples/STM32L476RG_nucleo/Debug/*.elf

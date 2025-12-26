@@ -59,7 +59,7 @@ dkms.conf
 *.uvproj
 .cproject.user
 .mxproject.user
-
+.mxproject
 # Ignore output folders
 /examples/STM32L476RG_nucleo/Debug/
 /examples/STM32L476RG_nucleo/Release/

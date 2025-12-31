@@ -6,23 +6,23 @@
 #include <stdbool.h>
 #include "imu_interface.h"
 // Function Pointer variables:
-static get_imu_accel stored_get_imu_accel = NULL;
-static get_imu_gyros stored_get_imu_gyros = NULL;
-static get_imu_mag stored_get_imu_mag = NULL;
+static get_imu_accel_t pfn_stored_get_imu_accel = NULL;
+static get_imu_gyros_t pfn_stored_get_imu_gyros = NULL;
+static get_imu_mag_t pfn_stored_get_imu_mag = NULL;
 
-bool set_imu_accelFunction(get_imu_accel fptr)
+bool set_imu_accelFunction(get_imu_accel_t pfn_fptr)
 {
 	bool ret_val = true;
 
-    if (fptr == NULL)
+    if (pfn_fptr == NULL)
     {
         ret_val = false;
     }
     else
     {
-        stored_get_imu_accel = fptr;
+        pfn_stored_get_imu_accel = pfn_fptr;
         // Redundant Check for hardware/memory failure
-        if (stored_get_imu_accel != fptr)
+        if (pfn_stored_get_imu_accel != pfn_fptr)
         {
             ret_val = false;
         }
@@ -30,19 +30,19 @@ bool set_imu_accelFunction(get_imu_accel fptr)
 	return ret_val;
 }
 
-bool set_imu_gyrosFunction(get_imu_gyros fptr)
+bool set_imu_gyrosFunction(get_imu_gyros_t pfn_fptr)
 {
 	bool ret_val = true;
 
-    if (fptr == NULL)
+    if (pfn_fptr == NULL)
     {
         ret_val = false;
     }
     else
     {
-	    stored_get_imu_gyros = fptr;
+	    pfn_stored_get_imu_gyros = pfn_fptr;
         // Redundant Check for hardware/memory failure
-	    if (stored_get_imu_gyros != fptr)
+	    if (pfn_stored_get_imu_gyros != pfn_fptr)
         {
             ret_val = false;
         }
@@ -50,19 +50,19 @@ bool set_imu_gyrosFunction(get_imu_gyros fptr)
 	return ret_val;
 }
 
-bool set_imu_magFunction(get_imu_mag fptr)
+bool set_imu_magFunction(get_imu_mag_t pfn_fptr)
 {
 	bool ret_val = true;
 
-    if (fptr == NULL)
+    if (pfn_fptr == NULL)
     {
         ret_val = false;
     }
     else
     {
-	    stored_get_imu_mag = fptr;
+	    pfn_stored_get_imu_mag = pfn_fptr;
         // Redundant Check for hardware/memory failure
-	    if (stored_get_imu_mag != fptr)
+	    if (pfn_stored_get_imu_mag != pfn_fptr)
         {
             ret_val = false;
         }
@@ -75,34 +75,40 @@ bool imu_config(imu_start imu_start_function)
 	return imu_start_function();
 }
 
-bool get_imu_data(float* accelOX, float* accelOY, float* accelOZ,
-					float* gyrosOX, float* gyrosOY, float* gyrosOZ,
-					float* magOX, float* magOY, float* magOZ)
+bool get_imu_data(imu_axis_data_t* st_imu_accel_data,
+				  imu_axis_data_t* st_imu_gyros_data,
+				  imu_axis_data_t* st_imu_magnet_data)                    
 {
 	bool ret_val = true;
-	if (stored_get_imu_accel != NULL)
+	if (pfn_stored_get_imu_accel != NULL)
     {
-		ret_val = ret_val && stored_get_imu_accel(accelOX, accelOY, accelOZ);
+		ret_val = ret_val && pfn_stored_get_imu_accel(&(st_imu_accel_data->f32_x),
+                                                      &(st_imu_accel_data->f32_y),
+                                                      &(st_imu_accel_data->f32_z));
 	}
     else
     {
-		ret_val = ret_val && false;
+		ret_val = false;
 	}
-	if (stored_get_imu_gyros != NULL)
+	if (pfn_stored_get_imu_gyros != NULL)
     {
-		ret_val = ret_val && stored_get_imu_gyros(gyrosOX, gyrosOY, gyrosOZ);
-	}
-    else
-    {
-		ret_val = ret_val && false;
-	}
-	if (stored_get_imu_mag != NULL)
-    {
-		ret_val = ret_val && stored_get_imu_mag(magOX, magOY, magOZ);
+		ret_val = ret_val && pfn_stored_get_imu_gyros(&(st_imu_gyros_data->f32_x),
+                                                      &(st_imu_gyros_data->f32_y),
+                                                      &(st_imu_gyros_data->f32_z));
 	}
     else
     {
-		ret_val = ret_val && false;
+		ret_val = false;
+	}
+	if (pfn_stored_get_imu_mag != NULL)
+    {
+		ret_val = ret_val && pfn_stored_get_imu_mag(&(st_imu_magnet_data->f32_x),
+                                                    &(st_imu_magnet_data->f32_y),
+                                                    &(st_imu_magnet_data->f32_z));
+	}
+    else
+    {
+		ret_val = false;
 	}
 
 	return ret_val;

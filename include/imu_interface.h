@@ -9,40 +9,44 @@
 
 //#include <stddef.h>
 #include <stdbool.h>
+#include <stdint.h>
+
+// Structure for better efficiency
+typedef struct {
+    float f32_x;
+    float f32_y;
+    float f32_z;
+} imu_axis_data_t;
 
 // Function Types
 /**
  * @brief Type definition for the IMU Start function pointer.
  * @return true if successful, false otherwise.
  */
-typedef bool (*imu_start)(void);
+typedef bool (*imu_start_t)(void);
 
 /**
  * @brief Type definition for the Get Accelerometer Data function pointer.
- * @param[out] accelOX X-axis acceleration.
- * @param[out] accelOY Y-axis acceleration.
- * @param[out] accelOZ Z-axis acceleration.
+ * @param[out] st_imu_accel_data structure pointer to acceleration data.
  * @return true if successful, false otherwise.
  */
-typedef bool (*get_imu_accel)(float* accelOX, float* accelOY, float* accelOZ);
+typedef bool (*get_imu_accel_t)(imu_axis_data_t* st_imu_accel_data);
 
 /**
  * @brief Type definition for the Get Gyroscope Data function pointer.
- * @param[out] accelOX X-axis acceleration.
- * @param[out] accelOY Y-axis acceleration.
- * @param[out] accelOZ Z-axis acceleration.
+ * @param[out] f32_gyrosOX X-axis Gyroscope.
+ * @param[out] st_imu_gyros_data structure pointer to Gyroscope data.
+ * @param[out] f32_gyrosOZ Z-axis Gyroscope.
  * @return true if successful, false otherwise.
  */
-typedef bool (*get_imu_gyros)(float* gyrosOX, float* gyrosOY, float* gyrosOZ);
+typedef bool (*get_imu_gyros_t)(imu_axis_data_t* st_imu_gyros_data);
 
 /**
  * @brief Type definition for the Get Magnetomoter Data function pointer.
- * @param[out] accelOX X-axis acceleration.
- * @param[out] accelOY Y-axis acceleration.
- * @param[out] accelOZ Z-axis acceleration.
+ * @param[out] st_imu_magnet_data structure pointer to magnetometer data.
  * @return true if successful, false otherwise.
  */
-typedef bool (*get_imu_mag)(float* magOX, float* magOY, float* magOZ);
+typedef bool (*get_imu_mag_t)(imu_axis_data_t* st_imu_magnet_data);
 
 #ifdef __cplusplus
 extern "C" {
@@ -51,24 +55,24 @@ extern "C" {
 // Pointer storing functions
 /**
  * @brief Sets the specific hardware implementation for the accelerometer data retrieval.
- * @param[in] fptr The function pointer to the hardware driver.
+ * @param[in] pfn_fptr The function pointer to the hardware driver.
  * @return true if registration is successful.
  */
-bool set_imu_accelFunction(get_imu_accel fptr);
+bool set_imu_accelFunction(get_imu_accel_t pfn_fptr);
 
 /**
  * @brief Sets the specific hardware implementation for the gyroscope data retrieval.
- * @param[in] fptr The function pointer to the hardware driver.
+ * @param[in] pfn_fptr The function pointer to the hardware driver.
  * @return true if registration is successful.
  */
-bool set_imu_gyrosFunction(get_imu_gyros fptr);
+bool set_imu_gyrosFunction(get_imu_gyros_t pfn_fptr);
 
 /**
  * @brief Sets the specific hardware implementation for the magnetomoter data retrieval.
- * @param[in] fptr The function pointer to the hardware driver.
+ * @param[in] pfn_fptr The function pointer to the hardware driver.
  * @return true if registration is successful.
  */
-bool set_imu_magFunction(get_imu_mag fptr);
+bool set_imu_magFunction(get_imu_mag_t pfn_fptr);
 
 // API Public functions
 /**
@@ -80,12 +84,12 @@ bool imu_config(imu_start imu_start_function);
 
 /**
  * @brief Retrieves all IMU data (Accel, Gyros, Mag) using the registered hardware functions.
- * @param[out] accelOX... Data output parameters.
+ * @param[out] f32_accelOX... Data output parameters.
  * @return true if all data retrieval is successful.
  */
-bool get_imu_data(float* accelOX, float* accelOY, float* accelOZ,
-					float* gyrosOX, float* gyrosOY, float* gyrosOZ,
-					float* magOX, float* magOY, float* magOZ);
+bool get_imu_data(imu_axis_data_t* st_imu_accel_data,
+				  imu_axis_data_t* st_imu_gyros_data,
+				  imu_axis_data_t* st_imu_magnet_data);
 
 #ifdef __cplusplus
 }

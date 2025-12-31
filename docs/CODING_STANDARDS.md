@@ -20,3 +20,18 @@ The project employs conditional compilation and a modular build system to ensure
 *   **Component Segregation:** Testing-specific libraries and transport layers (e.g., HITL UART modules) are excluded from production builds through preprocessor directives.
 *   **Footprint Optimization:** The final binary size is minimized for resource-constrained targets by including only the necessary dependencies for the selected hardware profile.
 *   **Consistent Behavior:** The architecture ensures that the flight control logic remains identical between simulation (SITL/HITL) and real-world deployment, reducing the risk of "it works in the simulator" errors.
+
+### 📚 External References & Standards
+
+To ensure the highest level of software integrity, this project refers to the following aerospace and safety-critical standards:
+
+*   **NASA/JPL Power of 10 Rules:** A set of 10 rules for safety-critical code development focused on verifiability and transparency. 
+    *   [Download/View PDF](https://spinroot.com/gerard/pdf/P10.pdf)
+*   **JPL Institutional Coding Standard (JPL D-60411):** The official C coding standard for flight software at the Jet Propulsion Laboratory.
+    *   [View Documentation](http://everyspec.com/NASA/NASA-JPL/JPL-D-60411_VER-1_32832/)
+*   **NASA C Style Guide (SEL-94-003):** Guidelines from the Goddard Space Flight Center for writing maintainable and readable C code.
+    *   [NASA Technical Reports Server (NTRS)](https://ntrs.nasa.gov/citations/19950022400)
+*   **MISRA C:2012 Guidelines:** Industry standard for C programming in safety-related systems (Automotive, Aerospace, Medical).
+    *   [Official MISRA Website](www.misra.org.uk)
+*   **Barr Group Embedded C Coding Standard:** A popular industry standard designed to minimize bugs in firmware.
+    *   [Access Online Version](barrgroup.com)

@@ -7,7 +7,6 @@
 #ifndef INCLUDE_IMU_INTERFACE_H_
 #define INCLUDE_IMU_INTERFACE_H_
 
-//#include <stddef.h>
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -34,9 +33,7 @@ typedef bool (*get_imu_accel_t)(imu_axis_data_t* st_imu_accel_data);
 
 /**
  * @brief Type definition for the Get Gyroscope Data function pointer.
- * @param[out] f32_gyrosOX X-axis Gyroscope.
  * @param[out] st_imu_gyros_data structure pointer to Gyroscope data.
- * @param[out] f32_gyrosOZ Z-axis Gyroscope.
  * @return true if successful, false otherwise.
  */
 typedef bool (*get_imu_gyros_t)(imu_axis_data_t* st_imu_gyros_data);

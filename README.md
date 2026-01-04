@@ -21,7 +21,7 @@ An educational, platform-agnostic C library for UAV flight control systems. Deve
 This repository represents **Version 2 (v2)** of the control system developed during my Bachelor's Degree Final Project in Industrial and Automatic Electronic Engineering.
 
 *   **v1 (Thesis Project):** A monolithic, baremetal firmware developed for Arduino, focused on validating core flight algorithms. You can review the original work [here](https://addi.ehu.es/handle/10810/53462).
-*   **v2 (Current Library):** This C library, designed for education and flexibility, decouples the core logic from specific hardware via a robust HAL.
+*   **v2 (Current Library):** Refactored as a 5-layer agnostic library to solve the hardware-locking issues of v1, allowing for cross-platform deployment and advanced simulation.
 
 ## Features
 
@@ -34,13 +34,10 @@ This repository represents **Version 2 (v2)** of the control system developed du
 
 ### Flexibility vs. Certification Standards
 
-The Hardware Abstraction Layer (HAL) architecture utilizes function pointers extensively to allow users to "inject" their specific hardware drivers at runtime.
+ATOP utilizes a decoupled architecture inspired by modern aerospace frameworks (e.g., NASA’s cFS). By using function pointers for Dependency Injection, we enable high-fidelity Software-In-The-Loop (SITL) testing without code modification.
 
-**ATOP is not compliant with safety standards such as MISRA C:2012.**
-
-Specifically, the use of function pointers violates rules intended to prevent runtime errors in safety-critical systems (e.g., **MISRA C:2012 Rule 1.1**).
-
-This design choice highlights a crucial engineering trade-off: maximizing flexibility for prototyping/education versus adhering to rigorous certification requirements for commercial aerospace use (e.g., DO-178C). The [CODING_STANDARDS.md](docs/CODING_STANDARDS.md) file details the rationale and the necessary steps to transition this architecture to a static, compliant system if required.
+Safety Standards & MISRA C:2012
+While this flexibility requires a formal deviation from MISRA C:2012 (e.g., Rule 11.1), the library implements rigorous mitigation strategies (NULL-pointer validation, redundancy checks, and SEU detection) to ensure reliability. Detailed rationale and compliance matrices can be found in [CODING_STANDARDS.md](./docs/CODING_STANDARDS.md).
 
 ## Getting Started
 
@@ -50,11 +47,14 @@ A C compiler and a target microcontroller environment (e.g., Arduino IDE, STM32C
 
 ### Building and Usage
 
-Instructions on how to compile the library, configure the hardware abstraction layer using the provided interface functions, and integrate it into a project will be provided here soon in the [docs/](docs/) directory.
+Please refer to the [Build & Deployment Guide](./docs/build_guide.md) for detailed toolchain setup, MCU porting instructions, and binary reproducibility.
 
-## Documentation
+## 📖 Engineering Documentation Portal
 
-Comprehensive diagrams, project specifications, and details on the coding standards will be provided here soon in the [docs/](docs/) directory.
+A comprehensive suite of documentation following aerospace standards is available in the [docs/](./docs/) directory:
+- [Quick Start: Build Guide](./docs/deployment/build_guide.md)
+- [Safety & Risk Analysis](./docs/safety/risk_fmea.md)
+- [Architecture Overview](./docs/architecture.md)
 
 ## License
 

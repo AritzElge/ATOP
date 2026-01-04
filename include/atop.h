@@ -2,31 +2,11 @@
 #define INCLUDE_ATOP_H_
 
 #include <stdbool.h>
+#include "atop_types.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-/* --- CALLBACK TYPES --- */
-
-/**
- * @brief Function pointer type for hardware drivers.
- * 
- * This type allows the user to implement hardware-specific logic 
- * using basic types (float pointers). This abstracts the library's 
- * internal data structures from the user.
- * 
- * @param[out] pf32_x Pointer to store the X-axis value.
- * @param[out] pf32_y Pointer to store the Y-axis value.
- * @param[out] pf32_z Pointer to store the Z-axis value.
- * @return true if the hardware read was successful, false otherwise.
- */
-typedef bool (*pfn_atop_get_raw_t)(float* pf32_x, float* pf32_y, float* pf32_z);
-
-// IMU interface configuration funtion pointer typedefs:
-typedef bool (*get_imu_accel_t)(float* f_accel_x, float* f_accel_y, float* f_accel_z);
-typedef bool (*get_imu_gyros_t)(float* f_gyros_x, float* f_gyros_y, float* f_gyros_z);
-typedef bool (*get_imu_mag_t)(float* f_magnet_x, float* f_magnet_y, float* f_magnet_z);
 
 /* --- PUBLIC API --- */
 

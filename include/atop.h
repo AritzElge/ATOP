@@ -2,27 +2,11 @@
 #define INCLUDE_ATOP_H_
 
 #include <stdbool.h>
+#include "atop_types.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-/* --- CALLBACK TYPES --- */
-
-/**
- * @brief Function pointer type for hardware drivers.
- * 
- * This type allows the user to implement hardware-specific logic 
- * using basic types (float pointers). This abstracts the library's 
- * internal data structures from the user.
- * 
- * @param[out] pf32_x Pointer to store the X-axis value.
- * @param[out] pf32_y Pointer to store the Y-axis value.
- * @param[out] pf32_z Pointer to store the Z-axis value.
- * @return true if the hardware read was successful, false otherwise.
- */
-typedef bool (*pfn_atop_get_raw_t)(float* pf32_x, float* pf32_y, float* pf32_z);
-
 
 /* --- PUBLIC API --- */
 
@@ -34,10 +18,10 @@ typedef bool (*pfn_atop_get_raw_t)(float* pf32_x, float* pf32_y, float* pf32_z);
  * @param[in] pfn_mag   Pointer to the magnetometer read function.
  * @return true if all drivers were registered successfully.
  */
-bool atop_imu_configure(pfn_atop_get_raw_t pfn_accel, 
-                        pfn_atop_get_raw_t pfn_gyro, 
-                        pfn_atop_get_raw_t pfn_mag);
-
+bool atop_imu_configure(get_imu_accel_t pfn_imuAccelFunction, 
+                        get_imu_gyros_t pfn_imuGyrosFunction, 
+                        get_imu_mag_t pfn_imuMagnetFunction);
+                        
 /**
  * @brief Starts the library execution loop.
  * 

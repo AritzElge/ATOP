@@ -1,4 +1,5 @@
 #include <stdbool.h>
+#include "atop.h"
 #include "imu_interface.h"
 
 static imu_axis_data_t st_accel_data;
@@ -12,7 +13,7 @@ static imu_axis_data_t st_magnet_data;
  * @param[in] pfn_imuMagnetFunction The function pointer to the hardware driver for magnetometer data adquisition.
  * @return true if configuration is successful.
  */
-bool atop_imu_configure(get_imu_accel pfn_imuAccelFunction, get_imu_gyros pfn_imuGyrosFunction, get_imu_mag pfn_imuMagnetFunction)
+bool atop_imu_configure(get_imu_accel_t pfn_imuAccelFunction, get_imu_gyros_t pfn_imuGyrosFunction, get_imu_mag_t pfn_imuMagnetFunction)
 {
     // Variable initialization
     bool ret_val = true;
@@ -29,18 +30,18 @@ bool atop_imu_configure(get_imu_accel pfn_imuAccelFunction, get_imu_gyros pfn_im
  * @brief Main Library Logic
  * @return fakse if an error happened.
  */
-bool atop_start()
+bool atop_start(void)
 {
     // Variable initialization
     bool ret_val = true;
 
-    while(1)
+    while(ret_val)
     {
         // Get IMU data
         ret_val = get_imu_data(&st_accel_data,
                                &st_gyros_data,
                                &st_magnet_data);
-        sleep(1);
+        (void)sleep(1U); 
     } 
     return false;
 }

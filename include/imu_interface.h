@@ -7,9 +7,9 @@
 #ifndef INCLUDE_IMU_INTERFACE_H_
 #define INCLUDE_IMU_INTERFACE_H_
 
-//#include <stddef.h>
 #include <stdbool.h>
 #include <stdint.h>
+#include "atop_types.h"
 
 // Structure for better efficiency
 typedef struct {
@@ -24,29 +24,6 @@ typedef struct {
  * @return true if successful, false otherwise.
  */
 typedef bool (*imu_start_t)(void);
-
-/**
- * @brief Type definition for the Get Accelerometer Data function pointer.
- * @param[out] st_imu_accel_data structure pointer to acceleration data.
- * @return true if successful, false otherwise.
- */
-typedef bool (*get_imu_accel_t)(imu_axis_data_t* st_imu_accel_data);
-
-/**
- * @brief Type definition for the Get Gyroscope Data function pointer.
- * @param[out] f32_gyrosOX X-axis Gyroscope.
- * @param[out] st_imu_gyros_data structure pointer to Gyroscope data.
- * @param[out] f32_gyrosOZ Z-axis Gyroscope.
- * @return true if successful, false otherwise.
- */
-typedef bool (*get_imu_gyros_t)(imu_axis_data_t* st_imu_gyros_data);
-
-/**
- * @brief Type definition for the Get Magnetomoter Data function pointer.
- * @param[out] st_imu_magnet_data structure pointer to magnetometer data.
- * @return true if successful, false otherwise.
- */
-typedef bool (*get_imu_mag_t)(imu_axis_data_t* st_imu_magnet_data);
 
 #ifdef __cplusplus
 extern "C" {

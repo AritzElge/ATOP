@@ -21,16 +21,16 @@ jobs:
 
     - name: Run Cppcheck
       id: cppcheck_run
+      # Rules suppression:
+      # Ignore missing system headers as they are provided by the target toolchain (e.g., ARM GCC)
+      # Library functions are not called within the library itself; entry points are in the app layer
+      # Prevent CI failure when a specific suppression is not triggered in the current file set
+      # DEVIATION: Required for Dependency Injection to support SITL/HITL simulation (Ref: CODING_STANDARDS.md)
+      # Support C99 features (e.g., inline, fixed-width types) required for modern MCU development
       run: |
-        # Rules suppression:
-        # Ignore missing system headers as they are provided by the target toolchain (e.g., ARM GCC)
-        # Library functions are not called within the library itself; entry points are in the app layer
-        # Prevent CI failure when a specific suppression is not triggered in the current file set
-        # DEVIATION: Required for Dependency Injection to support SITL/HITL simulation (Ref: CODING_STANDARDS.md)
-        # Support C99 features (e.g., inline, fixed-width types) required for modern MCU development
         cppcheck --enable=all --std=c99 \
         --template=gcc \
-        --library=std.cfg
+        --library=std.cfg \
         --error-exitcode=1 \
         --addon=misra \
         --inline-suppr \
@@ -40,9 +40,10 @@ jobs:
         --suppress=misra-c2012-11.1 \
         --suppress=misra-c2012-1.1 \
         -D_POSIX_C_SOURCE=200809L \
-        -I include/ src/
+        -I include/ src/ 2> cppcheck_results.xml
     
     - name: Upload Cppcheck results artifact
+      if: always()
       uses: actions/upload-artifact@v4
       with:
         name: cppcheck-results

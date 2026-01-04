@@ -17,17 +17,26 @@ jobs:
       uses: actions/checkout@v4
     
     - name: Install Cppcheck
-      run: sudo apt-get install -y cppcheck
+      run: sudo apt-get install -y cppcheck python3
 
     - name: Run Cppcheck
       id: cppcheck_run
       run: |
         cppcheck --enable=all --std=c99 \
         --template=gcc \
+        --library=std.cfg
         --error-exitcode=1 \
         --addon=misra \
         --inline-suppr \
+        # Ignore missing system headers as they are provided by the target toolchain (e.g., ARM GCC)
+        --suppress=missingIncludeSystem \
+        # Library functions are not called within the library itself; entry points are in the app layer
+        --suppress=unusedFunction \
+        # Prevent CI failure when a specific suppression is not triggered in the current file set
+        --suppress=unmatchedSuppression \
+        # DEVIATION: Required for Dependency Injection to support SITL/HITL simulation (Ref: CODING_STANDARDS.md)
         --suppress=misra-c2012-11.1 \
+        # Support C99 features (e.g., inline, fixed-width types) required for modern MCU development
         --suppress=misra-c2012-1.1 \
         -D_POSIX_C_SOURCE=200809L \
         -I include/ \

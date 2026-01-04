@@ -34,10 +34,10 @@ typedef bool (*pfn_atop_get_raw_t)(float* pf32_x, float* pf32_y, float* pf32_z);
  * @param[in] pfn_mag   Pointer to the magnetometer read function.
  * @return true if all drivers were registered successfully.
  */
-bool atop_imu_configure(pfn_atop_get_raw_t pfn_accel, 
-                        pfn_atop_get_raw_t pfn_gyro, 
-                        pfn_atop_get_raw_t pfn_mag);
-
+bool atop_imu_configure(get_imu_accel pfn_imuAccelFunction, 
+                        get_imu_gyros pfn_imuGyrosFunction, 
+                        get_imu_mag pfn_imuMagnetFunction);
+                        
 /**
  * @brief Starts the library execution loop.
  * 

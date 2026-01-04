@@ -23,6 +23,7 @@ jobs:
       id: cppcheck_run
       run: |
         cppcheck --enable=all --std=c99 \
+        --template=gcc \
         --error-exitcode=1 \
         --addon=misra \
         --inline-suppr \
@@ -30,7 +31,7 @@ jobs:
         --suppress=misra-c2012-1.1 \
         -D_POSIX_C_SOURCE=200809L \
         -I include/ \
-        --xml --output-file=cppcheck_results.xml src/
+        src/
     
     - name: Upload Cppcheck results artifact
       uses: actions/upload-artifact@v4

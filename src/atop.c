@@ -13,7 +13,7 @@ static imu_axis_data_t st_magnet_data;
  * @param[in] pfn_imuMagnetFunction The function pointer to the hardware driver for magnetometer data adquisition.
  * @return true if configuration is successful.
  */
-bool atop_imu_configure(get_imu_accel pfn_imuAccelFunction, get_imu_gyros pfn_imuGyrosFunction, get_imu_mag pfn_imuMagnetFunction)
+bool atop_imu_configure(get_imu_accel_t pfn_imuAccelFunction, get_imu_gyros_t pfn_imuGyrosFunction, get_imu_mag_t pfn_imuMagnetFunction)
 {
     // Variable initialization
     bool ret_val = true;

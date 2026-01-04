@@ -18,9 +18,9 @@ extern "C" {
  * @param[in] pfn_mag   Pointer to the magnetometer read function.
  * @return true if all drivers were registered successfully.
  */
-bool atop_imu_configure(get_imu_accel pfn_imuAccelFunction, 
-                        get_imu_gyros pfn_imuGyrosFunction, 
-                        get_imu_mag pfn_imuMagnetFunction);
+bool atop_imu_configure(get_imu_accel_t pfn_imuAccelFunction, 
+                        get_imu_gyros_t pfn_imuGyrosFunction, 
+                        get_imu_mag_t pfn_imuMagnetFunction);
                         
 /**
  * @brief Starts the library execution loop.

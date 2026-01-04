@@ -23,6 +23,10 @@ extern "C" {
  */
 typedef bool (*pfn_atop_get_raw_t)(float* pf32_x, float* pf32_y, float* pf32_z);
 
+// IMU interface configuration funtion pointer typedefs:
+typedef bool (*get_imu_accel_t)(float* f_accel_x, float* f_accel_y, float* f_accel_z);
+typedef bool (*get_imu_gyros_t)(float* f_gyros_x, float* f_gyros_y, float* f_gyros_z);
+typedef bool (*get_imu_mag_t)(float* f_magnet_x, float* f_magnet_y, float* f_magnet_z);
 
 /* --- PUBLIC API --- */
 

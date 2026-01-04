@@ -1,4 +1,4 @@
-name: Static Analysis
+name: Static Analysis & MISRA Compliance
 
 # Trigger this workflow on every 'push' or 'pull request' to the main branch
 on:
@@ -22,9 +22,15 @@ jobs:
     - name: Run Cppcheck
       id: cppcheck_run
       run: |
-        cppcheck --enable=all --std=c99 -D_POSIX_C_SOURCE=200809L \
+        cppcheck --enable=all --std=c99 \
+        --error-exitcode=1 \
+        --addon=misra \
+        --inline-suppr \
+        --suppress=misra-c2012-11.1 \
+        --suppress=misra-c2012-1.1 \
+        -D_POSIX_C_SOURCE=200809L \
         -I include/ \
-        --xml --output-file=cppcheck_results.xml $(find src/ -name "*.c") || true
+        --xml --output-file=cppcheck_results.xml src/
     
     - name: Upload Cppcheck results artifact
       uses: actions/upload-artifact@v4

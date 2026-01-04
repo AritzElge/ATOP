@@ -1,4 +1,5 @@
 #include <stdbool.h>
+#include "atop.h"
 #include "imu_interface.h"
 
 static imu_axis_data_t st_accel_data;

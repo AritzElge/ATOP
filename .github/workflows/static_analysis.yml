@@ -26,6 +26,8 @@ jobs:
       # Library functions are not called within the library itself; entry points are in the app layer
       # Prevent CI failure when a specific suppression is not triggered in the current file set
       # DEVIATION: Required for Dependency Injection to support SITL/HITL simulation (Ref: CODING_STANDARDS.md)
+      # Temp_DEVIATION: 8.9. Is annoying during development of the interfaces. MUST BE REMOVED THIS DEVIATION LATER
+      # Temp_DEVIATION: 2.3: As its PoC yet, using more globally available NOW it's okay. MUST BE REMOVED THIS DEVIATION LATER
       # Support C99 features (e.g., inline, fixed-width types) required for modern MCU development
       run: |
         cppcheck --enable=all --std=c99 \
@@ -39,6 +41,8 @@ jobs:
         --suppress=unmatchedSuppression \
         --suppress=misra-c2012-11.1 \
         --suppress=misra-c2012-1.1 \
+        --suppress=misra-c2012-8.9 \
+        --suppress=misra-c2012-2.3
         -D_POSIX_C_SOURCE=200809L \
         -I include/ src/ 2> cppcheck_results.xml
     

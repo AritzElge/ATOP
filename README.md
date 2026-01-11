@@ -147,7 +147,7 @@ graph LR
 | v1.0.0 | Operational Validation (UAV Flight)| TRL 7   |
 
 > ✅ Current phase: Interfaze Implementation (→ v0.1.0)  
-> 🎯 Next milestone: Simulator validation (SITL)
+> 🎯 Next milestone: Interfaze Implemented (Architecture Baseline)
 
 ## Getting Started
 

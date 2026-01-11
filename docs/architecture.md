@@ -141,6 +141,7 @@ The ATOP micro-kernel runs on a preemptive RTOS with fixed-priority scheduling. 
 | `trajectory_task`     | 5 Hz      | Medium   | 1 KB       | Waypoint tracking, setpoint gen |
 | `logger_task`         | 100 Hz    | Low      | 1.5 KB     | Raw & processed data logging    |
 | `health_check_task`   | 1 Hz      | Medium   | 1 KB       | System monitoring               |
+
 *Stack sizes are architecture-dependent and provided here as estimates for a 32-bit ARM Cortex-M platform.*
 
 ### 5. System State Model (State Machine)

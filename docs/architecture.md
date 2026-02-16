@@ -121,7 +121,7 @@ The Mission Orchestrator (main.c). It is responsible for:
 The "brain" of the system. It processes raw data into actionable knowledge:
 - **Orientation Filter:** Implementation of the Madgwick/Mahony algorithms.
 - **PID Controller:** Precision closed-loop control for actuators.
-- **Quaternion Engine:** Mathematical utilities for 3D rotations.
+- **Quaternion Engine:** Mathematical used for 3D rotations.
 
 #### 3.4 Device Abstraction Layer (DAL)
 A set of Interface Contracts. It defines the "what" but not the "how".
@@ -131,18 +131,42 @@ Example: imu_interface expects a standardized acceleration values, regardless of
 #### 3.5 Hardware Abstraction Layer (HAL)
 The bridge between software and silicon. These are the specific drivers provided by the user or the MCU manufacturer (e.g., STM32 HAL, ESP-IDF, or bare-metal registers).
 
-### 4. Execution Model
+### 4. Execution Model (BetterOS)
 
-The ATOP micro-kernel runs on a preemptive RTOS with fixed-priority scheduling. The following table defines the main tasks, their execution frequency, priority, stack allocation, and responsibilities.
+The ATOP micro-kernel runs on **BetterOS** *(Bare-Metal Executive *ime-Triggered Efficient Runtime Operative System)*. Unlike conventional kernel designs, BetterOS is a strictly deterministic executive environment that implements a **Time-Triggered Execution (TTE)** model based on a **hybrid design of Non-Maskable Interrupts (NMI) and Sequential Function Chart (SFC).**
 
-| Task                  | Frequency | Priority | Stack Size | Description                     |
-|-----------------------|-----------|----------|------------|---------------------------------|
-| `orientation_task`    | 400 Hz    | High     | 2 KB       | AHRS, sensor fusion             |
-| `trajectory_task`     | 5 Hz      | Medium   | 1 KB       | Waypoint tracking, setpoint gen |
-| `logger_task`         | 100 Hz    | Low      | 1.5 KB     | Raw & processed data logging    |
-| `health_check_task`   | 1 Hz      | Medium   | 1 KB       | System monitoring               |
+#### 4.1 Task Scheduling
+BetterOS operates without a dynamic scheduler or heap-based management, using hardware timers to orchestrate execution through fixed temporal slots. BetterOS uses dedicated hardware timers to set status flags. The Main Loop continuously polls these flags to trigger the execution of specific SFC cycles.
 
-*Stack sizes are architecture-dependent and provided here as estimates for a 32-bit ARM Cortex-M platform.*
+| Task                  | Frequency | Execution Mode  |Trigger (Timer-Flag) | Description                     |
+|-----------------------|-----------|-----------------|---------------------|---------------------------------|
+| `orientation_task`    | 400 Hz    | Asynchronous    | NMI Timer           | AHRS, sensor fusion             |
+| `mission_task`        | 10 Hz     | Synchronous Scan| TMR_MISSION_FLAG    | Master SFC: Phase Management    |
+| `trajectory_task`     | 5 Hz      | Synchronous Scan| TMR_TRAJ_FLAG       | Waypoint tracking, setpoint gen |
+| `health_check_task`   | 1 Hz      | Synchronous Scan| TMR_HEALTH_FLAG     | System monitoring               |
+| `logger_task`         | 100 Hz    | Synchronous Scan| TMR_LOGGER_TASK     | Raw & processed data logging    |
+
+#### 4.2 Control Cycle Architecture
+BetterOS partitions execution into two distinct timing domains to guarantee stability:
+
+1. **Critical Priority Domain (NMI):** The orientation_task is triggered directly by a non-maskable hardware interrupt of the highest priority. Its execution is immediate and preempts any other processor instruction, ensuring sensor fusion and PID stability occur within the exact microsecond required.
+2. **SFC/Grafcet Execution:** Following a **PLC-style scan,** all mission logic is processed in a single synchronous block divided into three internal steps:
+    1. **Input Reading:** Capture of DAL interfaces and timer flags to create a stable process image.
+    2. **RS Table Processing:** Simultaneous execution of all Grafcet structures. The system processes a consolidated **RS (Set/Reset) Table** relative to all Grafcets, ensuring that stage transitions occur correctly and synchronously across all branches according to the **MEIA Methodology.**
+    3. **Output Update:** Commitment of the logic results to actuators or internal command buffers.
+
+#### 4.3 Data Integrity & Inter-Task Communication
+To maintain strict decoupling between the **Asynchronous Domain (NMI)** and the **Synchronous Domain (SFC Scan)** without using blocking primitives, BetterOS implements a **Double-Buffering mechanism** for setpoint distribution:
+* **Setpoint Exchange:** The `trajectory_task` (Producer) and `orientation_task` (Consumer) share a synchronized structure consisting of a **Selection Flag** and two setpoint variables.
+* **Atomic Switching:**
+    * The `trajectory_task` updates the setpoint only in the inactive buffer. Once the write is complete, it **toggles the Selection Flag in a single atomic operation.**
+    * The `orientation_task` **(NMI)** always reads from the buffer indicated by the flag, ensuring it never accesses a partially written setpoint, even if the NMI preempts the main loop during a scan.
+* **Zero-Interference:** This lock-free approach ensures the `orientation_task` maintains its 400 Hz hard real-time guarantee while the `trajectory_task` operates at its native 5 Hz cycle.
+
+#### 4.4 Memory and State Management
+* **Static Allocation:** BetterOS enforces a zero-heap policy. All task states, RS tables, and Grafcet stages are pre-allocated in static memory at compile-time.
+* **Determinism:** The use of the RS table prevents transient states or race conditions, providing a mathematically sound execution of the flight mission.
+* **Residual Use:** BetterOS ensures that even if a scan (e.g., logger_task) is executing, the orientation_task (NMI) will immediately preempt the CPU, maintain the 400 Hz cadence, and return control to the scan exactly where it left off.
 
 ### 5. System State Model (State Machine)
 

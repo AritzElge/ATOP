@@ -1,39 +1,48 @@
-# Contributing to ATOP
+# Contributing & Engineering Methodology
 
-Thank you for considering contributing to ATOP. While this is a personal project, feedback, bug reports, and suggestions are welcome.
+## 1. Core Philosophy: Engineering as Applied Science
+At ATOP, we reject ad-hoc hacking and trial-and-error development. Engineering is fundamentally the **scientific method applied to creation**. 
 
-## How to Contribute
+While natural sciences use the scientific method for **Discovery**, engineering uses an isomorphic application of the exact same logical rigor for **Creation**. **Any attempt to bypass, subvert, or break the scientific method within this project will be indefinitely vetoed.** We operate under both formal expressions of the scientific method:
 
-1. **Open an Issue**: Before proposing changes, open an issue to describe the problem or enhancement.
-2. **Link to Requirements**: If applicable, reference the relevant requirement (e.g., `Closes FR-01`).
-3. **Pull Requests**: Ensure your code:
-   - Follows the coding standards (`CODING_STANDARDS.md`).
-   - Includes tests if applicable.
-   - Updates documentation.
-   - Passes CI checks (static analysis, build).
+### A. The Scientific Method of Discovery (Understanding Reality)
+1. **Observation**: Identifying a physical or operational phenomenon.
+2. **Hypothesis**: Proposing a model or explanation for the phenomenon.
+3. **Experiment Design**: Setting up controlled conditions to test the model.
+4. **Experimentation**: Execution and data gathering.
+5. **Data Consistency Verification**: Ensuring experimental data is sound and repeatable.
+6. **Hypothesis Validation**: Confirming or refuting the proposed model.
+7. **Natural Law / Theory**: Establishing reliable principles.
 
-## Development Workflow
+### B. The Scientific Method of Creation (Engineering & Synthesis)
+1. **Requirements (Hypothesis of Need)**: Defining what problem needs to be solved and what functional constraints must be met (e.g., Phase 0/A MDD & URD).
+2. **Behavioral Design**: Architecting how the system will behave to satisfy the requirements without violating physical or logical boundaries (SRS & Architecture).
+3. **Implementation/Manufacturing Procedure**: Formulating the rigorous, reproducible steps required to build the artifact (coding standards, MISRA-C, Power of 10, build pipelines).
+4. **Implementation / Execution**: Fabricating or coding the artifact according to the procedure.
+5. **Procedure Verification**: Confirming that the artifact was built *exactly* as specified by the procedure (static analysis, unit testing).
+6. **Behavioral Validation**: Proving that the artifact's actual behavior matches the original requirements (via SITL and HITL testing).
+7. **Prototype / Product Integration**: Deploying the validated artifact into its operational plant environment (such as UAV flight integration).
 
-- Use `main` as the main branch.
-- Name feature/fix branches as `feat/description` or `fix/description`.
-- Commit messages should be clear and follow: `type: brief description`.
+---
 
-## Definition of Done (DoD)
+## 2. Standards as Guardrails
+While the scientific method provides the underlying logic, industrial and aerospace standards (**ECSS**, **MISRA-C**, **NASA Power of 10**) serve as our operational guardrails. They exist to eliminate ambiguity, enforce determinism, and prevent systemic errors before code ever touches silicon.
 
-All contributions must satisfy the following project-wide requirements:
+---
 
-- [ ] No dynamic memory allocation (`malloc`, `free` prohibited) — complies with **NFR-02**.
-- [ ] All function pointers are validated for `NULL` before use — complies with **NFR-03**.
-- [ ] No direct access to internal state; encapsulation is enforced — complies with **AR-02**.
-- [ ] System parameters and buffer sizes are defined at compile-time — complies with **AR-03**.
-- [ ] Hardware interaction occurs only through defined interfaces (HAL/DAL) — complies with **AR-04**.
-- [ ] Code adheres to `CODING_STANDARDS.md` (including MISRA C:2012 deviations).
-- [ ] All changes pass static analysis and CI checks.
-- [ ] Documentation is updated.
-- [ ] Pull request links to relevant requirement (e.g., `Closes FR-01`).
+## 3. Repository Workflow Procedure
+To maintain the integrity of this methodology, all contributions and changes must follow a rigorous lifecycle mirroring the scientific method of creation:
 
-## Communication
-
-All technical discussions are managed via issues and pull requests. Direct commits without review are not accepted.
-
-Your collaboration helps improve the system's quality and reliability.   
+1. **Issue Tracking**: No change, refactoring, or feature is implemented without a prior formal Issue detailing its rationale and traceability.
+2. **Branching Strategy**: 
+   - Feature/Task branches must stem from ongoing baselines using descriptive names (e.g., `docs/urd_draft`, `feat/sensor-fusion`).
+3. **Documentation-Driven Engineering**:
+   - Requirements and design specifications must be updated *before* code implementation.
+   - Traceability links must be maintained between requirements and verification artifacts.
+4. **Code Quality Gates**:
+   - Zero dynamic memory allocation (`malloc` / `heap` usage is strictly prohibited).
+   - Full compliance with static analysis rules and coding guidelines.
+   - Verification through reproducible testing procedures.
+   - **Mandatory Binary Audit**: Every example or reference implementation provided in the repository must undergo and pass an explicit binary compilation and static/WCET audit.
+5. **Review & Merge**:
+   - Code and documentation are subject to peer/architectural review before merging into the main line.

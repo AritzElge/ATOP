@@ -119,5 +119,6 @@ ATOP is structured as a decoupled layered firmware library. The architecture enf
 
 ## 8. Special Remarks
 
-- None.
+### **INTEGRATION & QUALIFICATION NOTICE**: 
+- ATOP is provided as an uncompiled, hardware-agnostic firmware library. Compliance with safety rules (such as MISRA-C and static memory bounds) within the core codebase does not constitute end-system qualification. Final verification, binary static analysis, worst-case execution time (WCET) profiling, and hardware-in-the-loop (HIL) testing must be performed by the integrating entity on the final compiled target binary.
 

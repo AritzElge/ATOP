@@ -4,7 +4,8 @@ A deterministic, hardware-agnostic C firmware library for fixed-wing UAV flight 
 
 > ⚠️ **PROJECT STATUS NOTICE**: This project is currently **paused** while resolving a critical dependency: **`bastard`**, our custom-built code autogenerator designed to ensure formal verification and trace generation for core firmware modules.
 
-![Project Status](https://img.shields.io/badge/Project_Status-Fase 0/A-blue)
+![Project Status](https://img.shields.io/badge/Project_Status-Fase_0/A-blue)
+
 ![Technology Readiness](https://img.shields.io/badge/TRL-3-blue)
 
 ## Table of Contents

@@ -33,16 +33,63 @@ While the scientific method provides the underlying logic, industrial and aerosp
 ## 3. Repository Workflow Procedure
 To maintain the integrity of this methodology, all contributions and changes must follow a rigorous lifecycle mirroring the scientific method of creation:
 
-1. **Issue Tracking**: No change, refactoring, or feature is implemented without a prior formal Issue detailing its rationale and traceability.
-2. **Branching Strategy**: 
-   - Feature/Task branches must stem from ongoing baselines using descriptive names (e.g., `docs/urd_draft`, `feat/sensor-fusion`).
-3. **Documentation-Driven Engineering**:
+```mermaid
+graph TD
+    classDef req fill:#d4edda,stroke:#28a745,stroke-width:2px,color:#155724;
+    classDef des fill:#cce5ff,stroke:#004085,stroke-width:2px,color:#004085;
+    classDef imp fill:#fff3cd,stroke:#ffc107,stroke-width:2px,color:#856404;
+    classDef vv fill:#f8d7da,stroke:#dc3545,stroke-width:2px,color:#721c24;
+    classDef core fill:#e2e3e5,stroke:#383d41,stroke-width:2px,color:#383d41;
+
+    A([Observe a Need]) --> B{Is it necessary for the project?}
+    B -->|No| C[Do nothing]
+    B -->|Yes| W[Create Main Issue]
+
+    W --> D[Create Requirements Issue]:::req
+    D --> E[Open Requirements Branch]:::req
+    E --> F[Define Formal Requirements]:::req
+    F --> G[Merge PR & Close Requirements Issue]:::req
+
+    G --> H[Create Design Issue]:::des
+    H --> I[Open Design Branch]:::des
+    I --> J[System Design]:::des
+    J --> K[Merge PR & Close Design Issue]:::des
+
+    K --> L[Create Implementation Issue]:::imp
+    L --> M[Open Implementation Branch]:::imp
+    M --> N[Define Implementation Procedure & Code Implementation]:::imp
+    N --> O[Tests and Static Analysis]:::imp
+    O --> P{Does implementation comply with procedure?}:::imp
+    P -->|No| N
+    P -->|Yes| Q[Merge PR & Close Implementation Issue]:::imp
+
+    Q --> R[Create Verification Issue]:::vv
+    R --> S[Open Verification Branch]:::vv
+    S --> T[Unit Tests, SIL, HIL]:::vv
+    T --> U{Does design satisfy requirements?}:::vv
+    U -->|No - Design Flaw| X[Merge PR & Close Verification Issue]:::vv
+    X --> I
+    U -->|Yes - Pass| Y[Merge PR & Close Verification Issue]:::vv
+
+    Y --> Z[Create Validation Issue]:::vv
+    Z --> AA[Open Validation Branch]:::vv
+    AA --> AB[System Validation]:::vv
+    AB --> AC{Does it solve the problem?}:::vv
+    AC -->|No - Requirement Flaw| AD[Merge PR & Close Validation Issue]:::vv
+    AD --> E
+    AC -->|Yes - Pass| AE[Merge PR & Close Validation Issue]:::vv
+    AE --> AF([Close Main Issue])
+```
+
+1. **Issue Tracking**: No change, refactoring, or feature is implemented without a prior formal Issue detailing its rationale and traceability. Branches must explicitly tell their nature (req/..., design/..., feat/..., verfy/...).
+2. **Documentation-Driven Engineering**:
    - Requirements and design specifications must be updated *before* code implementation.
    - Traceability links must be maintained between requirements and verification artifacts.
-4. **Code Quality Gates**:
+3. **Code Quality Gates**:
    - Zero dynamic memory allocation (`malloc` / `heap` usage is strictly prohibited).
    - Full compliance with static analysis rules and coding guidelines.
    - Verification through reproducible testing procedures.
-   - **Mandatory Binary Audit**: Every example or reference implementation provided in the repository must undergo and pass an explicit binary compilation and static/WCET audit.
-5. **Review & Merge**:
-   - Code and documentation are subject to peer/architectural review before merging into the main line.
+   - **Mandatory Binary Formal Audit**: Every example or reference implementation provided in the repository must undergo and pass a formal binary audit, including static analysis and predictability verification on the target compiled output.
+4. **Review & Merge**:
+   - No PR can merge into main branch without explicit approval of the system architect, CI/CD validation and required documental traces.
+   - Every Pull Request for Implementation, Verification, or Validation must include the corresponding execution logs, test reports, or traceability matrices as mandatory artifacts before review and merge.
